@@ -52,6 +52,11 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapObjects\City.cs" />
+    <Compile Include="MapObjects\CityData.cs" />
+    <Compile Include="MapObjects\Line.cs" />
+    <Compile Include="MapObjects\Point.cs" />
+    <Compile Include="MapObjects\River.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainWindow.resx">
@@ -82,7 +87,6 @@
   <ItemGroup>
     <Folder Include="DataParser\" />
     <Folder Include="Events\" />
-    <Folder Include="MapObjects\" />
     <Folder Include="Simulator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
