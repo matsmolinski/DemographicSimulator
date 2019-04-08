@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser\Parser.cs" />
+    <Compile Include="Events\Fire.cs" />
+    <Compile Include="Events\Flood.cs" />
+    <Compile Include="Events\IGameEvent.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,11 +59,13 @@
     <Compile Include="MapObjects\City.cs" />
     <Compile Include="MapObjects\CityData.cs" />
     <Compile Include="MapObjects\Line.cs" />
+    <Compile Include="Simulator\MainControler.cs" />
     <Compile Include="Simulator\Map.cs" />
     <Compile Include="MapObjects\Point.cs" />
     <Compile Include="MapObjects\River.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulator\MapConfiguration.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,8 +91,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

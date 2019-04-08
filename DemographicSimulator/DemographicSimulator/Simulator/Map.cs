@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace DemographicSimulator.Simulator
 {
     public class Map
-    { 
+    {
+        public MapConfiguration mc;
         public List <Line> ContourLines { set; get; }
         public List <River> Rivers { set; get; }
         public List <City> Cities { set; get; }
