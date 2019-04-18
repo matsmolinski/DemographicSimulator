@@ -32,14 +32,15 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cityDataBox = new System.Windows.Forms.RichTextBox();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.globalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,6 +83,13 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
+            // globalToolStripMenuItem
+            // 
+            this.globalToolStripMenuItem.Name = "globalToolStripMenuItem";
+            this.globalToolStripMenuItem.Size = new System.Drawing.Size(107, 24);
+            this.globalToolStripMenuItem.Text = "Adjust World";
+            this.globalToolStripMenuItem.Click += new System.EventHandler(this.GlobalToolStripMenuItem_Click);
+            // 
             // addEventToolStripMenuItem
             // 
             this.addEventToolStripMenuItem.Name = "addEventToolStripMenuItem";
@@ -93,6 +101,12 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
+            this.aboutToolStripMenuItem.Text = "About";
             // 
             // gamePanel
             // 
@@ -135,24 +149,24 @@
             this.cityDataBox.Text = "\nWarsaw\nPopulation: 1 764 615\nAvg. temperature: 7,73 °C\nDistance to river: 0 km";
             this.cityDataBox.TextChanged += new System.EventHandler(this.RichTextBox1_TextChanged);
             // 
-            // aboutToolStripMenuItem
+            // button1
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
-            this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // globalToolStripMenuItem
-            // 
-            this.globalToolStripMenuItem.Name = "globalToolStripMenuItem";
-            this.globalToolStripMenuItem.Size = new System.Drawing.Size(107, 24);
-            this.globalToolStripMenuItem.Text = "Adjust World";
-            this.globalToolStripMenuItem.Click += new System.EventHandler(this.GlobalToolStripMenuItem_Click);
+            this.button1.BackgroundImage = global::DemographicSimulator.Properties.Resources.playbtn;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Location = new System.Drawing.Point(1021, 147);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(116, 68);
+            this.button1.TabIndex = 5;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1182, 679);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.cityDataBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -183,6 +197,7 @@
         private System.Windows.Forms.RichTextBox cityDataBox;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem globalToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 

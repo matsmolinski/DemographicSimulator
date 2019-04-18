@@ -47,9 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser\Parser.cs" />
+    <Compile Include="Events\Drought.cs" />
+    <Compile Include="Events\Earthquake.cs" />
     <Compile Include="Events\Fire.cs" />
     <Compile Include="Events\Flood.cs" />
     <Compile Include="Events\IGameEvent.cs" />
+    <Compile Include="Events\Wind.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +80,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -91,6 +95,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Textures\pausebtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Textures\playbtn.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
