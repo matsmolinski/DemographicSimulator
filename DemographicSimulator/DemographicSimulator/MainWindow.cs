@@ -21,6 +21,7 @@ namespace DemographicSimulator
         {
             mc = new MainControler();
             InitializeComponent();
+            gamePanel.Paint += new PaintEventHandler(GamePanel_Paint);
 
             trackBar1 = new TrackBar();
             Controls.AddRange(new Control[] {trackBar1 });
@@ -47,9 +48,17 @@ namespace DemographicSimulator
             Application.Exit();
         }
 
-        private void Panel1_Paint(object sender, PaintEventArgs e)
+        private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
-
+            var g = e.Graphics;
+            Random rnd = new Random();
+            int i = rnd.Next(0, 11);
+            if(i > 5)
+                g.DrawLine(new Pen(Color.Red,3), 10, 10, 100, 100);
+            else
+            {
+                g.DrawLine(new Pen(Color.Blue, 3), 210, 210, 100, 100);
+            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -78,11 +87,13 @@ namespace DemographicSimulator
             {
                 button1.BackgroundImage = Properties.Resources.playbtn;
                 mc.IsSimulationOn = false;
+                gamePanel.Refresh();
             }
             else
             {
                 button1.BackgroundImage = Properties.Resources.pausebtn;
                 mc.IsSimulationOn = true;
+                gamePanel.Refresh();
             }
                 
         }

@@ -115,7 +115,6 @@
             this.gamePanel.Name = "gamePanel";
             this.gamePanel.Size = new System.Drawing.Size(962, 604);
             this.gamePanel.TabIndex = 1;
-            this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel1_Paint);
             // 
             // label1
             // 
