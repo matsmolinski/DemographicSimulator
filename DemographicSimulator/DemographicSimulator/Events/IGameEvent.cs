@@ -1,4 +1,5 @@
-﻿using DemographicSimulator.Simulator;
+﻿using DemographicSimulator.MapObjects;
+using DemographicSimulator.Simulator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace DemographicSimulator.Events
 {
     public interface IGameEvent
     {
-        Map ProceedEvent(Map map);
+        Map ProceedEvent(Map map, Point center);
     }
 }

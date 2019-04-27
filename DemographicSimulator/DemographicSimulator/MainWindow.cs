@@ -1,4 +1,5 @@
 ﻿using DemographicSimulator.DataParser;
+using DemographicSimulator.Events;
 using DemographicSimulator.Simulator;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,12 @@ namespace DemographicSimulator
                 gamePanel.Refresh();
             }
                 
+        }
+
+        private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Drought dr = new Drought();
+            mc.ForceEvent(dr);
         }
     }
 }
