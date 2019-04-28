@@ -1,5 +1,6 @@
 ﻿using DemographicSimulator.DataParser;
 using DemographicSimulator.Events;
+using DemographicSimulator.MapObjects;
 using DemographicSimulator.Simulator;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,9 @@ namespace DemographicSimulator
             gamePanel.Paint += new PaintEventHandler(GamePanel_Paint);
 
             trackBar1 = new TrackBar();
-            Controls.AddRange(new Control[] {trackBar1 });
+            Controls.AddRange(new Control[] {trackBar1});
 
-            trackBar1.Location = new Point(760, 80);
+            trackBar1.Location = new System.Drawing.Point(760, 80);
             trackBar1.Size = new Size(100, 45);
             trackBar1.Scroll += new EventHandler(TrackBar1_Scroll);
 
@@ -54,12 +55,34 @@ namespace DemographicSimulator
             var g = e.Graphics;
             Random rnd = new Random();
             int i = rnd.Next(0, 11);
-            if(i > 5)
-                g.DrawLine(new Pen(Color.Red,3), 10, 10, 100, 100);
+            if (i > 5)
+            {
+                PaintCity(g, new MapObjects.Point(500, 100));
+                PaintRiver(g, new Line(210, 210, 100, 50));
+                PaintContour(g, new Line(10, 110, 110, 100));
+            }
+               
             else
             {
-                g.DrawLine(new Pen(Color.Blue, 3), 210, 210, 100, 100);
+                PaintCity(g, new MapObjects.Point(300, 300));
+                PaintRiver(g, new Line(10, 10, 30, 50));
+                PaintContour(g, new Line(111, 111, 222, 222));
             }
+        }
+
+        private void PaintCity(Graphics g, MapObjects.Point p)
+        {
+            g.FillEllipse(new SolidBrush(Color.Red), p.X, p.Y, 10, 10);
+        }
+
+        private void PaintRiver(Graphics g, Line l)
+        {
+            g.DrawLine(new Pen(Color.Blue, 3), l.Points[0].X, l.Points[0].Y, l.Points[1].X, l.Points[1].Y);
+        }
+
+        private void PaintContour(Graphics g, Line l)
+        {
+            g.DrawLine(new Pen(Color.BlanchedAlmond, 3), l.Points[0].X, l.Points[0].Y, l.Points[1].X, l.Points[1].Y);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

@@ -8,6 +8,7 @@ namespace DemographicSimulator.MapObjects
 {
     public class Line
     {
+        private Point[] points;
         public Line(Point[] points)
         {
             if(points.Length == 2)
@@ -16,24 +17,31 @@ namespace DemographicSimulator.MapObjects
             }
             else
             {
-                points = new Point [2];
-                points[0] = new Point(0, 0);
-                points[1] = new Point(1, 1);
+                Points = new Point [2];
+                Points[0] = new Point(0, 0);
+                Points[1] = new Point(1, 1);
             }
+        }
+        
+        public Line(int xa, int ya, int xb, int yb)
+        {
+            Points = new Point[2];
+            Points[0] = new Point(xa, ya);
+            Points[1] = new Point(xb, yb);
         }
 
         public Point [] Points
         {
             get
             {
-                return Points;
+                return points;
             }
 
             set
             {
                 if(value.Length == 2)
                 {
-                    Points = value;
+                    points = value;
                 }
             }
         }
