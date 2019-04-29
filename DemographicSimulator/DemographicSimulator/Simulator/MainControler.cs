@@ -15,6 +15,7 @@ namespace DemographicSimulator.Simulator
 
         public MainControler()
         {
+            Map = new Map();
             IsSimulationOn = false;
         }
         public void MakeTimeJump(int timePeriod)

@@ -25,6 +25,20 @@ namespace DemographicSimulator
             InitializeComponent();
             gamePanel.Paint += new PaintEventHandler(GamePanel_Paint);
 
+            mc.Map.ContourLines.Add(new Line(10, 10, 300, 10));
+            mc.Map.ContourLines.Add(new Line(300, 10, 300, 300));
+            mc.Map.ContourLines.Add(new Line(300, 300, 200, 400));
+            mc.Map.ContourLines.Add(new Line(200, 400, 10, 350));
+            mc.Map.ContourLines.Add(new Line(10, 10, 10, 350));
+
+            mc.Map.Cities.Add(new City(new MapObjects.Point(50, 50), 10000));
+            mc.Map.Cities.Add(new City(new MapObjects.Point(200, 200), 10000));
+
+            Line[] segs = new Line[2];
+            segs[0] = new Line(150, 10, 150, 100);
+            segs[1] = new Line(150, 100, 200, 150);
+            River river = new River(segs);
+            mc.Map.Rivers.Add(river);
             trackBar1 = new TrackBar();
             Controls.AddRange(new Control[] {trackBar1});
 
@@ -53,21 +67,33 @@ namespace DemographicSimulator
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            Random rnd = new Random();
+            foreach(Line l in mc.Map.ContourLines)
+            {
+                PaintContour(g, l);
+            }
+            foreach (River r in mc.Map.Rivers)
+            {
+                PaintRiver(g, r);
+            }
+            foreach (City c in mc.Map.Cities)
+            {
+                PaintCity(g, c.point);
+            }
+            /*Random rnd = new Random();
             int i = rnd.Next(0, 11);
             if (i > 5)
             {
                 PaintCity(g, new MapObjects.Point(500, 100));
-                PaintRiver(g, new Line(210, 210, 100, 50));
+                //PaintRiver(g, new Line(210, 210, 100, 50));
                 PaintContour(g, new Line(10, 110, 110, 100));
             }
                
             else
             {
                 PaintCity(g, new MapObjects.Point(300, 300));
-                PaintRiver(g, new Line(10, 10, 30, 50));
+               // PaintRiver(g, new Line(10, 10, 30, 50));
                 PaintContour(g, new Line(111, 111, 222, 222));
-            }
+            }*/
         }
 
         private void PaintCity(Graphics g, MapObjects.Point p)
@@ -75,9 +101,15 @@ namespace DemographicSimulator
             g.FillEllipse(new SolidBrush(Color.Red), p.X, p.Y, 10, 10);
         }
 
-        private void PaintRiver(Graphics g, Line l)
+        private void PaintRiver(Graphics g, River r)
         {
-            g.DrawLine(new Pen(Color.Blue, 3), l.Points[0].X, l.Points[0].Y, l.Points[1].X, l.Points[1].Y);
+            for(int i = 0; i <r.riverSegments.Length; i++)
+            {
+                Line seg = r.riverSegments[i];
+                g.DrawLine(new Pen(Color.Blue, 3), seg.Points[0].X, seg.Points[0].Y,
+                    seg.Points[1].X, seg.Points[1].Y);
+            }
+            
         }
 
         private void PaintContour(Graphics g, Line l)
