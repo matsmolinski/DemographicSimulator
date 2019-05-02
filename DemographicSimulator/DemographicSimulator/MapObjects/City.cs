@@ -9,11 +9,12 @@ namespace DemographicSimulator.MapObjects
     public class City
     {
         public readonly Point point;
-
-        public City(Point point, int population)
+        public readonly string name;
+        public City(Point point, int population, string name)
         {
             this.point = point;
             Population = population;
+            this.name = name;
             CityData = new CityData();
         }
 

@@ -2,7 +2,7 @@
 {
     public class MapConfiguration
     {
-        public MapConfiguration(double avgTemperature, double avgHeight, int developmentLevel, double birthrate)
+        public MapConfiguration(double avgTemperature, double avgHeight, double developmentLevel, double birthrate)
         {
             AvgTemperature = avgTemperature;
             AvgHeight = avgHeight;
@@ -10,10 +10,10 @@
             Birthrate = birthrate;
         }
 
-        public double AvgTemperature { get; }
-        public double AvgHeight { get; }
-        public int DevelopmentLevel { get; }
-        public double Birthrate { get; }
+        public double AvgTemperature { get; set; }
+        public double AvgHeight { get; set; }
+        public double DevelopmentLevel { get; set; }
+        public double Birthrate { get; set; }
     }
 
 }

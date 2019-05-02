@@ -31,8 +31,8 @@ namespace DemographicSimulator
             mc.Map.ContourLines.Add(new Line(200, 400, 10, 350));
             mc.Map.ContourLines.Add(new Line(10, 10, 10, 350));
 
-            mc.Map.Cities.Add(new City(new MapObjects.Point(50, 50), 10000));
-            mc.Map.Cities.Add(new City(new MapObjects.Point(200, 200), 10000));
+            mc.Map.Cities.Add(new City(new MapObjects.Point(50, 50), 10000, "warszawka"));
+            mc.Map.Cities.Add(new City(new MapObjects.Point(200, 200), 10000, "ciechanow"));
 
             Line[] segs = new Line[2];
             segs[0] = new Line(150, 10, 150, 100);
@@ -50,7 +50,7 @@ namespace DemographicSimulator
             trackBar1.TickFrequency = 5;
             trackBar1.LargeChange = 3;
             trackBar1.SmallChange = 2;
-            Parser.readData("anyPath");
+            Parser.ReadData("anyPath", out List<string> fb);
             DateTime.Now.ToString("yyyy-MM-dd");
         }
 

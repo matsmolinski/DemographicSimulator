@@ -9,6 +9,13 @@ namespace DemographicSimulator.MapObjects
     public class Line
     {
         private Point[] points;
+        public Line(Point point1, Point point2)
+        {
+                Points = new Point[2];
+                Points[0] = point1;
+                Points[1] = point2;
+
+        }
         public Line(Point[] points)
         {
             if(points.Length == 2)

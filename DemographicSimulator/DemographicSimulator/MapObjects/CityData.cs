@@ -8,9 +8,9 @@ namespace DemographicSimulator.MapObjects
 {
     public class CityData
     {
-        public readonly double DistanceToRiver;
-        public readonly double Height;
-        public double health;
-        
+        public double DistanceToRiver { set; get; }
+        public double Height { set; get; }
+        public double Health { set; get; }
+
     }
 }
