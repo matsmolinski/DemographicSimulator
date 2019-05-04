@@ -22,7 +22,7 @@ namespace DemographicSimulator.DataParser
         public static Map ReadData(string dataPath, out List <string> feedback)
         {
             ParserState state = ParserState.START;
-            int lineCounter = 0, currentRiver = 0;
+            int lineCounter = 0, currentRiver = 1;
             List<Point> currentRiverSegments = new List<Point>();
             Map map = new Map();
             MapConfiguration mc = new MapConfiguration(8, 10, 5, 5);
@@ -70,6 +70,14 @@ namespace DemographicSimulator.DataParser
                     case ParserState.RIVERS:
                         if (line.Length > 0 && line[0] == '#')
                         {
+                            Line[] currentRiverLines = new Line[currentRiverSegments.Count - 1];
+                            for (int i = 0; i < currentRiverSegments.Count - 1; i++)
+                            {
+                                currentRiverLines[i] = new Line(currentRiverSegments[i], currentRiverSegments[i + 1]);
+                            }
+                            //currentRiverLines[currentRiverSegments.Count - 1] =
+                            //    new Line(currentRiverSegments[currentRiverSegments.Count - 1], currentRiverSegments[0]);
+                            map.Rivers.Add(new River(currentRiverLines));
                             state = ParserState.CITIES;
                         }
                         else
@@ -133,7 +141,7 @@ namespace DemographicSimulator.DataParser
             }
             if (!double.TryParse(elements[1], out double va))
             {
-                throw new ParseLineException("Height has to be a floating point number");
+                throw new ParseLineException("Value has to be a floating point number");
             }
             switch (elements[0])
             {
@@ -152,6 +160,9 @@ namespace DemographicSimulator.DataParser
                 case "srednia_wysokosc":
                     mc.AvgHeight = va;
                     break;
+
+                default:
+                    throw new ParseLineException("Definition unrecognised");
             }
 
         }
@@ -188,7 +199,7 @@ namespace DemographicSimulator.DataParser
                 City c = new City(new Point(x, y), pop, elements[3]);
                 if (elements.Length > 4)
                 {
-                    if (!double.TryParse(elements[2], out double height))
+                    if (!double.TryParse(elements[4], out double height))
                     {
                         throw new ParseLineException("Height has to be a floating point number");
                     }
@@ -206,15 +217,19 @@ namespace DemographicSimulator.DataParser
         private static void ParseRiverSegment(string line, ref int currentRiver, ref List<Point> currentRiverSegments, Map map)
         {
             string[] elements = line.Split();
-            if(elements[0] != currentRiver.ToString())
+            if (elements.Length > 3)
             {
-                Line[] currentRiverLines = new Line [currentRiverSegments.Count];
+                throw new ParseLineException("Too many arguments" + elements[2]);
+            }
+            if (elements[0] != currentRiver.ToString())
+            {
+                Line[] currentRiverLines = new Line [currentRiverSegments.Count - 1];
                 for (int i = 0; i < currentRiverSegments.Count - 1; i++)
                 {
                     currentRiverLines[i] = new Line(currentRiverSegments[i], currentRiverSegments[i + 1]);
                 }
-                currentRiverLines[currentRiverSegments.Count - 1] = 
-                    new Line(currentRiverSegments[currentRiverSegments.Count - 1], currentRiverSegments[0]);
+                //currentRiverLines[currentRiverSegments.Count - 1] = 
+                //    new Line(currentRiverSegments[currentRiverSegments.Count - 1], currentRiverSegments[0]);
                 map.Rivers.Add(new River(currentRiverLines));
                 if (!int.TryParse(elements[0], out int no))
                 {
@@ -247,7 +262,7 @@ namespace DemographicSimulator.DataParser
             string[] elements = line.Split();
             if (elements.Length > 2)
             {
-                throw new ParseLineException("Too many arguments");
+                throw new ParseLineException("Too many arguments" + elements[2]);
             }
             try
             {

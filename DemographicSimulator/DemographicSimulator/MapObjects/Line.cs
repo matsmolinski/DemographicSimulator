@@ -55,13 +55,22 @@ namespace DemographicSimulator.MapObjects
 
         public override bool Equals(object obj)
         {
-            return obj is Line line &&
-                   EqualityComparer<Point[]>.Default.Equals(Points, line.Points);
+            if(obj is Line line)
+            {
+                return (points[0].Equals(line.points[0]) && points[1].Equals(line.points[1]))
+                    || (points[0].Equals(line.points[1]) && points[1].Equals(line.points[0]));
+            }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return 480822998 + EqualityComparer<Point[]>.Default.GetHashCode(Points);
+            return points[0].GetHashCode() + points[1].GetHashCode() + 456642221;
+        }
+
+        public override string ToString()
+        {
+            return points[0].X + " " + points[0].Y + " " + points[1].X + " " + points[1].Y;
         }
     }
 }

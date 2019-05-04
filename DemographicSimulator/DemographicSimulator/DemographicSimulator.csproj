@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataParser\ParseFileException.cs" />
     <Compile Include="DataParser\Parser.cs" />
     <Compile Include="Events\Drought.cs" />
     <Compile Include="Events\Earthquake.cs" />
