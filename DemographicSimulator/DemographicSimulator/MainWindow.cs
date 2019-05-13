@@ -50,7 +50,7 @@ namespace DemographicSimulator
             trackBar1.TickFrequency = 5;
             trackBar1.LargeChange = 3;
             trackBar1.SmallChange = 2;
-            Parser.ReadData("anyPath", out List<string> fb);
+            //Parser.ReadData("anyPath", out List<string> fb);
             DateTime.Now.ToString("yyyy-MM-dd");
         }
 
@@ -158,6 +158,16 @@ namespace DemographicSimulator
         {
             Drought dr = new Drought();
             mc.ForceEvent(dr);
+        }
+
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tekst w pliku Bez tytułu zmienił się. Czy chcesz zapisać zmiany?");
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Project Demographic Simulator \n Author: Mateusz Smoliński");
         }
     }
 }
