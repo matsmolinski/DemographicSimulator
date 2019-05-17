@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +20,7 @@ namespace DemographicSimulator
     {
         private readonly MainControler mc;
         private readonly TrackBar trackBar1;
+        private Thread simulationThread;
 
         public MainWindow()
         {
@@ -54,7 +57,7 @@ namespace DemographicSimulator
             DateTime.Now.ToString("yyyy-MM-dd");
         }
 
-        private void TrackBar1_Scroll(object sender, System.EventArgs e)
+        private void TrackBar1_Scroll(object sender, EventArgs e)
         {
             Console.WriteLine(trackBar1.Value);
         }
@@ -119,7 +122,10 @@ namespace DemographicSimulator
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-
+            if(mc.IsSimulationOn)
+            {
+                mc.IsSimulationOn = false;
+            }
         }
 
         private void Label1_Click(object sender, EventArgs e)
@@ -141,15 +147,18 @@ namespace DemographicSimulator
         {
             if (mc.IsSimulationOn)
             {
+                cityDataBox.AppendText("xD");
                 button1.BackgroundImage = Properties.Resources.playbtn;
-                mc.IsSimulationOn = false;
-                gamePanel.Refresh();
+                mc.IsSimulationOn = false;               
+                //gamePanel.Refresh();
             }
             else
             {
                 button1.BackgroundImage = Properties.Resources.pausebtn;
                 mc.IsSimulationOn = true;
-                gamePanel.Refresh();
+                simulationThread = new Thread(new ThreadStart(Run));
+                simulationThread.Start();
+                //gamePanel.Refresh();
             }
                 
         }
@@ -162,12 +171,73 @@ namespace DemographicSimulator
 
         private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tekst w pliku Bez tytułu zmienił się. Czy chcesz zapisać zmiany?");
+            MessageBox.Show("To start the simulation, press start button. \nTo pause the simulation, press pause button.\n" +
+                "To force an event, use the \"Add event\" option on the menu bar. \nYou can upload your own file at any moment, using File>Load option.",
+                "Help");
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Project Demographic Simulator \n Author: Mateusz Smoliński");
+            MessageBox.Show("Project Demographic Simulator \n Author: Mateusz Smoliński", "About");
+        }
+
+        private void LoadFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+                    MessageBox.Show(filePath, "File pat: " + filePath, MessageBoxButtons.OK);
+                    mc.Map = Parser.ReadData(filePath, out List<string> fb);
+                    gamePanel.Refresh();
+                }              
+            }          
+        }
+
+        public void Run()
+        {
+
+            while (true)
+            {
+                if(!mc.IsSimulationOn)
+                {
+                    break;
+                }
+                int sliderValue = 30;
+                trackBar1.Invoke(new Action(delegate ()
+                {
+                    sliderValue = trackBar1.Value;
+                }));               
+                int factor = 31 - sliderValue;
+                mc.MakeTimeJump(1);
+
+                cityDataBox.Invoke(new Action(delegate ()
+                {
+                    cityDataBox.AppendText("xD");
+                }));
+                Thread.Sleep(500 * factor);
+            }
+        }
+
+        delegate void UpdateLabelDelegate(string message);
+
+        void UpdatePanel(string message)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new UpdateLabelDelegate(UpdatePanel), message);
+                return;
+            }
+
+            cityDataBox.AppendText("xD");
         }
     }
 }
