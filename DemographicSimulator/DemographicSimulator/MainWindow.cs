@@ -27,34 +27,20 @@ namespace DemographicSimulator
             mc = new MainControler();
             InitializeComponent();
             gamePanel.Paint += new PaintEventHandler(GamePanel_Paint);
-
-            mc.Map.ContourLines.Add(new Line(10, 10, 300, 10));
-            mc.Map.ContourLines.Add(new Line(300, 10, 300, 300));
-            mc.Map.ContourLines.Add(new Line(300, 300, 200, 400));
-            mc.Map.ContourLines.Add(new Line(200, 400, 10, 350));
-            mc.Map.ContourLines.Add(new Line(10, 10, 10, 350));
-
-            mc.Map.Cities.Add(new City(new MapObjects.Point(50, 50), 10000, "warszawka"));
-            mc.Map.Cities.Add(new City(new MapObjects.Point(200, 200), 10000, "ciechanow"));
-
-            Line[] segs = new Line[2];
-            segs[0] = new Line(150, 10, 150, 100);
-            segs[1] = new Line(150, 100, 200, 150);
-            River river = new River(segs);
-            mc.Map.Rivers.Add(river);
             trackBar1 = new TrackBar();
             Controls.AddRange(new Control[] {trackBar1});
 
             trackBar1.Location = new System.Drawing.Point(760, 80);
             trackBar1.Size = new Size(100, 45);
             trackBar1.Scroll += new EventHandler(TrackBar1_Scroll);
+            trackBar1.Minimum = 1;
+            trackBar1.Maximum = 12;
+            trackBar1.TickFrequency = 1;
+            trackBar1.LargeChange = 2;
+            trackBar1.SmallChange = 1;
 
-            trackBar1.Maximum = 30;
-            trackBar1.TickFrequency = 5;
-            trackBar1.LargeChange = 3;
-            trackBar1.SmallChange = 2;
-            //Parser.ReadData("anyPath", out List<string> fb);
-            DateTime.Now.ToString("yyyy-MM-dd");
+            trackBar1.Enabled = false;
+            label2.Text=DateTime.Now.ToString("dd.MM.yyyy");
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -69,39 +55,24 @@ namespace DemographicSimulator
 
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
-            var g = e.Graphics;
-            foreach(Line l in mc.Map.ContourLines)
-            {
-                PaintContour(g, l);
-            }
+            var g = e.Graphics;           
             foreach (River r in mc.Map.Rivers)
             {
                 PaintRiver(g, r);
             }
             foreach (City c in mc.Map.Cities)
             {
-                PaintCity(g, c.point);
+                PaintCity(g, c);
             }
-            /*Random rnd = new Random();
-            int i = rnd.Next(0, 11);
-            if (i > 5)
+            foreach (Line l in mc.Map.ContourLines)
             {
-                PaintCity(g, new MapObjects.Point(500, 100));
-                //PaintRiver(g, new Line(210, 210, 100, 50));
-                PaintContour(g, new Line(10, 110, 110, 100));
+                PaintContour(g, l);
             }
-               
-            else
-            {
-                PaintCity(g, new MapObjects.Point(300, 300));
-               // PaintRiver(g, new Line(10, 10, 30, 50));
-                PaintContour(g, new Line(111, 111, 222, 222));
-            }*/
         }
 
-        private void PaintCity(Graphics g, MapObjects.Point p)
+        private void PaintCity(Graphics g, City c)
         {
-            g.FillEllipse(new SolidBrush(Color.Red), p.X, p.Y, 10, 10);
+            g.FillEllipse(new SolidBrush(Color.Red), c.point.X, c.point.Y, 10, 10);
         }
 
         private void PaintRiver(Graphics g, River r)
@@ -189,17 +160,39 @@ namespace DemographicSimulator
             {
                 openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
+                openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog.FileName;
-                    MessageBox.Show(filePath, "File pat: " + filePath, MessageBoxButtons.OK);
-                    mc.Map = Parser.ReadData(filePath, out List<string> fb);
-                    gamePanel.Refresh();
-                }              
-            }          
+                    try
+                    {
+                        mc.Map = Parser.ReadData(filePath, out List<string> fb);
+                        if(fb.Count != 0)
+                        {
+                            string message = "";
+                            foreach(string s in fb)
+                            {
+                                message = message + s + "\n";
+                            }
+                            MessageBox.Show(message, "Warning", MessageBoxButtons.OK);
+                        }
+                        label2.Text = DateTime.Now.ToString("dd.MM.yyyy");
+                        trackBar1.Enabled = true;
+                        cityDataBox.Enabled = true;
+                        addEventToolStripMenuItem.Enabled = true;
+                        globalToolStripMenuItem.Enabled = true;
+                        button1.Enabled = true;
+                        gamePanel.Refresh();
+                    }
+                    catch(ParseFileException er)
+                    {
+                        MessageBox.Show(er.Message, "Error", MessageBoxButtons.OK);
+                    }
+                    
+                }
+            }
         }
 
         public void Run()
@@ -211,33 +204,18 @@ namespace DemographicSimulator
                 {
                     break;
                 }
-                int sliderValue = 30;
+                int sliderValue = 6;
                 trackBar1.Invoke(new Action(delegate ()
                 {
                     sliderValue = trackBar1.Value;
                 }));               
-                int factor = 31 - sliderValue;
-                mc.MakeTimeJump(1);
-
+                mc.MakeTimeJump(sliderValue);
                 cityDataBox.Invoke(new Action(delegate ()
                 {
                     cityDataBox.AppendText("xD");
                 }));
-                Thread.Sleep(500 * factor);
+                Thread.Sleep(1000);
             }
-        }
-
-        delegate void UpdateLabelDelegate(string message);
-
-        void UpdatePanel(string message)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new UpdateLabelDelegate(UpdatePanel), message);
-                return;
-            }
-
-            cityDataBox.AppendText("xD");
-        }
+        }      
     }
 }

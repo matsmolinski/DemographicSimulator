@@ -56,7 +56,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(509, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(359, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -86,6 +86,7 @@
             // 
             // globalToolStripMenuItem
             // 
+            this.globalToolStripMenuItem.Enabled = false;
             this.globalToolStripMenuItem.Name = "globalToolStripMenuItem";
             this.globalToolStripMenuItem.Size = new System.Drawing.Size(107, 24);
             this.globalToolStripMenuItem.Text = "Adjust World";
@@ -93,6 +94,7 @@
             // 
             // addEventToolStripMenuItem
             // 
+            this.addEventToolStripMenuItem.Enabled = false;
             this.addEventToolStripMenuItem.Name = "addEventToolStripMenuItem";
             this.addEventToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
             this.addEventToolStripMenuItem.Text = "AddEvent";
@@ -145,6 +147,7 @@
             // cityDataBox
             // 
             this.cityDataBox.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.cityDataBox.Enabled = false;
             this.cityDataBox.Location = new System.Drawing.Point(990, 377);
             this.cityDataBox.Name = "cityDataBox";
             this.cityDataBox.Size = new System.Drawing.Size(180, 258);
@@ -156,6 +159,7 @@
             // 
             this.button1.BackgroundImage = global::DemographicSimulator.Properties.Resources.playbtn;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(1021, 147);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(116, 68);

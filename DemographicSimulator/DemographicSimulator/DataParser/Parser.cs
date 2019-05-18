@@ -128,6 +128,10 @@ namespace DemographicSimulator.DataParser
                         break;
                 }
             }
+            if (state != ParserState.GLOBAL && state != ParserState.CITIES)
+            {
+                throw new ParseFileException("File does not contain information about cities. Please verify the file.");
+            }
             map.mc = mc;
             return map;
         }
@@ -139,7 +143,7 @@ namespace DemographicSimulator.DataParser
             {
                 throw new ParseLineException("Too many arguments");
             }
-            if (!double.TryParse(elements[1], out double va))
+            if (!double.TryParse(elements[1].Replace('.',','), out double va))
             {
                 throw new ParseLineException("Value has to be a floating point number");
             }

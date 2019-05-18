@@ -20,9 +20,7 @@ namespace DemographicSimulator.Simulator
         }
         public void MakeTimeJump(int timePeriod)
         {
-            Random r = new Random();
-            int val = r.Next(1, 100);
-            Console.WriteLine("żyję"+val);
+            Console.WriteLine("żyję"+timePeriod);
         }
         public void ForceEvent(IGameEvent gameEvent)
         {
