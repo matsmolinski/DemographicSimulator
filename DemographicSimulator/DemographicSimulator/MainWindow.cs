@@ -38,11 +38,18 @@ namespace DemographicSimulator
             trackBar1.TickFrequency = 1;
             trackBar1.LargeChange = 2;
             trackBar1.SmallChange = 1;
-
+            //FormClosing += new FormClosingEventHandler(MainWindowClosing);
             trackBar1.Enabled = false;
             label2.Text=DateTime.Now.ToString("dd.MM.yyyy");
         }
 
+        //private void MainWindowClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (e.CloseReason == CloseReason.UserClosing)
+        //    {
+        //        e.Cancel = true; //I'm sorry Dave, I'm afraid I can't do that.
+       //     }
+        //}
         private void TrackBar1_Scroll(object sender, EventArgs e)
         {
             Console.WriteLine(trackBar1.Value);
@@ -127,7 +134,10 @@ namespace DemographicSimulator
             {
                 button1.BackgroundImage = Properties.Resources.pausebtn;
                 mc.IsSimulationOn = true;
-                simulationThread = new Thread(new ThreadStart(Run));
+                simulationThread = new Thread(new ThreadStart(Run))
+                {
+                    IsBackground = true
+                };
                 simulationThread.Start();
                 //gamePanel.Refresh();
             }
@@ -210,12 +220,35 @@ namespace DemographicSimulator
                     sliderValue = trackBar1.Value;
                 }));               
                 mc.MakeTimeJump(sliderValue);
-                cityDataBox.Invoke(new Action(delegate ()
+                label2.Invoke(new Action(delegate ()
                 {
-                    cityDataBox.AppendText("xD");
+                    label2.Text = AddToDate(sliderValue);
                 }));
+                
                 Thread.Sleep(1000);
             }
-        }      
+        }
+
+        private string AddToDate(int sliderValue)
+        {
+            string currentData = label2.Text;
+            string[] dateElements = currentData.Split('.');
+            Console.WriteLine(dateElements[0]);
+            int.TryParse(dateElements[0], out int day);
+            int.TryParse(dateElements[1], out int month);
+            int.TryParse(dateElements[2], out int year);
+            month += sliderValue;
+            if(month > 12)
+            {
+                month -= 12;
+                year++;
+            }
+            if (day > 28)
+            {
+                day = 28;
+            }
+            return day + "." + (month < 10 ? "0" : "") + month + "." + year;
+
+        }
     }
 }
