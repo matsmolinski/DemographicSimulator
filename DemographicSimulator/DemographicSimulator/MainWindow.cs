@@ -111,7 +111,10 @@ namespace DemographicSimulator
 
         private void GlobalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            DataForm dataWindow = new DataForm(mc.Map.mc)
+            {
+                Visible = true
+            };
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -138,8 +141,10 @@ namespace DemographicSimulator
 
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Drought dr = new Drought();
-            mc.ForceEvent(dr);
+            EventForm eventWindow = new EventForm
+            {
+                Visible = true
+            };
         }
 
         private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
