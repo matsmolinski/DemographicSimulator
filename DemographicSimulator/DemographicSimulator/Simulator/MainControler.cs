@@ -1,4 +1,5 @@
 ﻿using DemographicSimulator.Events;
+using DemographicSimulator.MapObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,10 @@ namespace DemographicSimulator.Simulator
         }
         public void MakeTimeJump(int timePeriod)
         {
-            Console.WriteLine("żyję"+timePeriod);
+            foreach(City c in Map.Cities)
+            {
+                c.Population += (int)(Map.mc.Birthrate * c.Population * timePeriod / 12);
+            }
         }
         public void ForceEvent(IGameEvent gameEvent)
         {

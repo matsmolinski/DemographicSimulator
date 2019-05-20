@@ -21,6 +21,7 @@ namespace DemographicSimulator
         private readonly MainControler mc;
         private readonly TrackBar trackBar1;
         private Thread simulationThread;
+        private City chosenCity = null;
 
         public MainWindow()
         {
@@ -38,18 +39,10 @@ namespace DemographicSimulator
             trackBar1.TickFrequency = 1;
             trackBar1.LargeChange = 2;
             trackBar1.SmallChange = 1;
-            //FormClosing += new FormClosingEventHandler(MainWindowClosing);
             trackBar1.Enabled = false;
             label2.Text=DateTime.Now.ToString("dd.MM.yyyy");
         }
 
-        //private void MainWindowClosing(object sender, FormClosingEventArgs e)
-        //{
-        //    if (e.CloseReason == CloseReason.UserClosing)
-        //    {
-        //        e.Cancel = true; //I'm sorry Dave, I'm afraid I can't do that.
-       //     }
-        //}
         private void TrackBar1_Scroll(object sender, EventArgs e)
         {
             Console.WriteLine(trackBar1.Value);
@@ -125,7 +118,6 @@ namespace DemographicSimulator
         {
             if (mc.IsSimulationOn)
             {
-                cityDataBox.AppendText("xD");
                 button1.BackgroundImage = Properties.Resources.playbtn;
                 mc.IsSimulationOn = false;               
                 //gamePanel.Refresh();
@@ -224,8 +216,25 @@ namespace DemographicSimulator
                 {
                     label2.Text = AddToDate(sliderValue);
                 }));
-                
+                cityDataBox.Invoke(new Action(delegate ()
+                {
+                    RefreshCityDataBox();
+                }));
                 Thread.Sleep(1000);
+            }
+        }
+
+        private void RefreshCityDataBox()
+        {
+            if (chosenCity == null)
+            {
+                cityDataBox.Text = "";
+            }
+            else
+            {
+                cityDataBox.Text = chosenCity.name + "\nPopulation: " + chosenCity.Population +
+                    "\nAvg. temperature: " + mc.Map.mc.AvgTemperature + "°C\n" +
+                    "Distance to river: " + chosenCity.CityData.DistanceToRiver + " km";
             }
         }
 
@@ -249,6 +258,24 @@ namespace DemographicSimulator
             }
             return day + "." + (month < 10 ? "0" : "") + month + "." + year;
 
+        }
+
+        private void GamePanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            bool chosen = false;
+            foreach (City c in mc.Map.Cities)
+            {
+                if (Math.Abs(e.X - c.point.X) < 10 && Math.Abs(e.Y - c.point.Y) < 10)
+                {
+                    chosenCity = c;
+                    chosen = true;
+                }
+            }
+            if (!chosen)
+            {
+                chosenCity = null;
+            }
+            RefreshCityDataBox();
         }
     }
 }

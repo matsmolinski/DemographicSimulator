@@ -25,7 +25,7 @@ namespace DemographicSimulator.DataParser
             int lineCounter = 0, currentRiver = 1;
             List<Point> currentRiverSegments = new List<Point>();
             Map map = new Map();
-            MapConfiguration mc = new MapConfiguration(8, 10, 5, 5);
+            MapConfiguration mc = new MapConfiguration(8, 10, 5, 1);
             StreamReader reader = new StreamReader(dataPath);
             string line;
             feedback = new List<string>();
