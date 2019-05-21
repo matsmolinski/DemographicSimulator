@@ -133,6 +133,19 @@ namespace DemographicSimulator.DataParser
                 throw new ParseFileException("File does not contain information about cities. Please verify the file.");
             }
             map.mc = mc;
+            foreach(City c in map.Cities)
+            {
+                double shortestDistance = double.MaxValue;
+                foreach(River r in map.Rivers)
+                {
+                    double curDist = r.Distance(c.point);
+                    if(curDist < shortestDistance)
+                    {
+                        shortestDistance = curDist;
+                    }
+                }
+                c.CityData.DistanceToRiver = shortestDistance;
+            }
             return map;
         }
 

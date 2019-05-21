@@ -125,7 +125,6 @@ namespace DemographicSimulator
             {
                 button1.BackgroundImage = Properties.Resources.playbtn;
                 mc.IsSimulationOn = false;               
-                //gamePanel.Refresh();
             }
             else
             {
@@ -136,17 +135,16 @@ namespace DemographicSimulator
                     IsBackground = true
                 };
                 simulationThread.Start();
-                //gamePanel.Refresh();
             }
                 
         }
-
+// TUTAJ
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EventForm eventWindow = new EventForm(mc)
             {
                 Visible = true
-            };           
+            };            
         }
 
         private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,7 +168,7 @@ namespace DemographicSimulator
             }          
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = "c:\\";
+               // openFileDialog.InitialDirectory = "/~";
                 openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
@@ -246,7 +244,8 @@ namespace DemographicSimulator
             {
                 cityDataBox.Text = chosenCity.name + "\nPopulation: " + chosenCity.Population +
                     "\nAvg. temperature: " + mc.Map.mc.AvgTemperature + "°C\n" +
-                    "Distance to river: " + chosenCity.CityData.DistanceToRiver + " km";
+                    "Distance to river: " + chosenCity.CityData.DistanceToRiver + " km\n" +
+                    "Point: "+ chosenCity.point.ToString();
             }
         }
 

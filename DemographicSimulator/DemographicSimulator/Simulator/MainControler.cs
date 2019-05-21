@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DemographicSimulator.Simulator
 {
@@ -21,14 +22,20 @@ namespace DemographicSimulator.Simulator
         }
         public void MakeTimeJump(int timePeriod)
         {
-            foreach(City c in Map.Cities)
+            double factor = Math.Pow(Map.mc.Birthrate + 1, 1.0/12.0);
+            while(timePeriod-- > 0)
             {
-                c.Population += (int)(Map.mc.Birthrate * c.Population * timePeriod / 12);
+                foreach (City c in Map.Cities)
+                {
+                    c.Population = (int)(c.Population * factor);
+                }
             }
+            
         }
         public void ForceEvent(IGameEvent gameEvent, Point point, int power)
         {
-            Console.WriteLine(gameEvent.GetType());
+            gameEvent.ProceedEvent(Map, point, power, out int victims, out int migrants);
+            MessageBox.Show("Victims: " + victims + "\nMigrants: " + migrants, gameEvent.ToString(), MessageBoxButtons.OK);
         }
 
     }

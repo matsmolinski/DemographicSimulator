@@ -10,6 +10,6 @@ namespace DemographicSimulator.Events
 {
     public interface IGameEvent
     {
-        Map ProceedEvent(Map map, Point center);
+        void ProceedEvent(Map map, Point center, int power, out int victims, out int migrants);
     }
 }

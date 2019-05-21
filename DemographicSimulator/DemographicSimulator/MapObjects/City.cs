@@ -20,5 +20,10 @@ namespace DemographicSimulator.MapObjects
 
         public int Population { set; get; }
         public CityData CityData { set; get; }
+
+        public double Distance(Point p)
+        {
+            return Math.Sqrt(Math.Pow(point.X - p.X, 2) + Math.Pow(point.Y - p.Y, 2));
+        }
     }
 }
