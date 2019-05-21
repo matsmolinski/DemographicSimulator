@@ -154,7 +154,7 @@ namespace DemographicSimulator.DataParser
                     break;
 
                 case "stopien_rozwoju":
-                    mc.DevelopmentLevel = va;
+                    mc.DevelopmentLevel = (int)va;
                     break;
 
                 case "srednia_temperatura":
@@ -232,8 +232,6 @@ namespace DemographicSimulator.DataParser
                 {
                     currentRiverLines[i] = new Line(currentRiverSegments[i], currentRiverSegments[i + 1]);
                 }
-                //currentRiverLines[currentRiverSegments.Count - 1] = 
-                //    new Line(currentRiverSegments[currentRiverSegments.Count - 1], currentRiverSegments[0]);
                 map.Rivers.Add(new River(currentRiverLines));
                 if (!int.TryParse(elements[0], out int no))
                 {

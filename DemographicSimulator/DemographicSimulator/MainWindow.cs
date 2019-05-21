@@ -40,12 +40,14 @@ namespace DemographicSimulator
             trackBar1.LargeChange = 2;
             trackBar1.SmallChange = 1;
             trackBar1.Enabled = false;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+
             label2.Text=DateTime.Now.ToString("dd.MM.yyyy");
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
         {
-            Console.WriteLine(trackBar1.Value);
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -141,10 +143,10 @@ namespace DemographicSimulator
 
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventForm eventWindow = new EventForm
+            EventForm eventWindow = new EventForm(mc)
             {
                 Visible = true
-            };
+            };           
         }
 
         private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -162,7 +164,10 @@ namespace DemographicSimulator
         private void LoadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string filePath = string.Empty;
-
+            if(mc.IsSimulationOn)
+            {
+                Button1_Click(null, null);
+            }          
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\";
@@ -192,6 +197,8 @@ namespace DemographicSimulator
                         globalToolStripMenuItem.Enabled = true;
                         button1.Enabled = true;
                         gamePanel.Refresh();
+                        chosenCity = null;
+                        RefreshCityDataBox();
                     }
                     catch(ParseFileException er)
                     {
@@ -247,7 +254,6 @@ namespace DemographicSimulator
         {
             string currentData = label2.Text;
             string[] dateElements = currentData.Split('.');
-            Console.WriteLine(dateElements[0]);
             int.TryParse(dateElements[0], out int day);
             int.TryParse(dateElements[1], out int month);
             int.TryParse(dateElements[2], out int year);

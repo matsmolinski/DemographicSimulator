@@ -26,9 +26,9 @@ namespace DemographicSimulator.Simulator
                 c.Population += (int)(Map.mc.Birthrate * c.Population * timePeriod / 12);
             }
         }
-        public void ForceEvent(IGameEvent gameEvent)
+        public void ForceEvent(IGameEvent gameEvent, Point point, int power)
         {
-            //todo
+            Console.WriteLine(gameEvent.GetType());
         }
 
     }
