@@ -212,6 +212,14 @@ namespace DemographicSimulator
 
             while (true)
             {
+                if(mc.Map.mc.IsChanged)
+                {
+                    foreach(City c in mc.Map.Cities)
+                    {
+                        c.CityData.Height = mc.Map.mc.AvgHeight;
+                    }
+                    mc.Map.mc.IsChanged = false;
+                }
                 if(!mc.IsSimulationOn)
                 {
                     break;

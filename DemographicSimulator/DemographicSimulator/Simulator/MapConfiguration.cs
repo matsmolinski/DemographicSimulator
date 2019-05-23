@@ -8,8 +8,9 @@
             AvgHeight = avgHeight;
             DevelopmentLevel = developmentLevel;
             Birthrate = birthrate;
+            IsChanged = false;
         }
-
+        public bool IsChanged { get; set; }
         public double AvgTemperature { get; set; }
         public double AvgHeight { get; set; }
         public int DevelopmentLevel { get; set; }

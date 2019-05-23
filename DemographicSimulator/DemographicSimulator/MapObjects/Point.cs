@@ -32,6 +32,11 @@ namespace DemographicSimulator.MapObjects
             return hashCode;
         }
 
+        public static Point operator +(Point argument1, Point argument2)
+        {
+            return new Point(argument1.X + argument2.X, argument1.Y + argument2.Y);
+        }
+
         public override string ToString()
         {
             return "(" + X + "," + Y + ")";

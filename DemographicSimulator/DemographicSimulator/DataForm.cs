@@ -55,6 +55,7 @@ namespace DemographicSimulator
             mc.DevelopmentLevel = dev;
             mc.AvgTemperature = temp;
             mc.AvgHeight = hei;
+            mc.IsChanged = true;
             Visible = false;
         }
     }

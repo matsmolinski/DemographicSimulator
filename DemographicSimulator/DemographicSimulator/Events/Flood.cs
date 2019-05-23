@@ -34,7 +34,7 @@ namespace DemographicSimulator.Events
                 double factor = ((20 - c.Distance(center)) / 20) * power / 100;
                 Console.WriteLine(factor);
                 int cityVictims = (int)(10 * factor * (0.6 + r.NextDouble()) / 1.6);
-                int cityMigrants = (int)(10000 * factor * (0.7 + r.NextDouble()) / 1.7);
+                int cityMigrants = (int)(1000 * factor * (0.7 + r.NextDouble()) / 1.7);
                 if (c.Population < 10000)
                 {
                     cityMigrants = (int)(c.Population * factor);
