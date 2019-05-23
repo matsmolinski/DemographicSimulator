@@ -33,7 +33,7 @@ namespace DemographicSimulator.Events
                 Random r = new Random();
                 double factor = ((100 - c.Distance(center)) / 100) * power / 100;
                 Console.WriteLine(factor);
-                int cityVictims = (int)(50 * factor * (0.6 + r.NextDouble()) / 1.6);
+                int cityVictims = (int)(50 * factor * (0.2 + r.NextDouble()) / 1.2);
                 int cityMigrants = (int)(1000 * factor * (0.7 + r.NextDouble()) / 1.7);
                 if (c.Population < 1000)
                 {
@@ -63,6 +63,10 @@ namespace DemographicSimulator.Events
                 victims += cityVictims;
                 migrants += cityMigrants;
             }
+        }
+        public override string ToString()
+        {
+            return "Wind!";
         }
     }
 }

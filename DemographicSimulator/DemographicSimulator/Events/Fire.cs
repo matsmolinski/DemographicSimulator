@@ -32,13 +32,14 @@ namespace DemographicSimulator.Events
                 Random r = new Random();
                 double factor = (5 - c.Distance(center)) / 5 * power / 100;
                 Console.WriteLine(factor);
-                int cityVictims = (int)(1000 * factor * r.NextDouble() / 1);
-                int cityMigrants = (int)(2000 * factor * (1 + r.NextDouble()) / 2);
-                if (c.Population < 2000)
+                int cityVictims = (int)(100 * factor * r.NextDouble() / 1);
+                int cityMigrants = (int)(500 * factor * (1 + r.NextDouble()) / 2);
+                if (c.Population < 500)
                 {
                     cityMigrants = (int)(c.Population * factor);
-                    cityVictims = 0;
                     c.Population -= cityMigrants;
+                    cityVictims = (int)(c.Population * factor * r.NextDouble());
+                    c.Population -= cityVictims;
                 }
                 else
                 {
@@ -62,6 +63,10 @@ namespace DemographicSimulator.Events
                 victims += cityVictims;
                 migrants += cityMigrants;
             }
+        }
+        public override string ToString()
+        {
+            return "Fire!";
         }
     }
 }

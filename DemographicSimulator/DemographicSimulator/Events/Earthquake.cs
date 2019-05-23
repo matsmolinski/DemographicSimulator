@@ -34,12 +34,23 @@ namespace DemographicSimulator.Events
                 double factor = ((100 - c.Distance(center)) / 100) * power / 100;
                 Console.WriteLine(factor);
                 int cityVictims = (int)(10000 * factor * (1.6 + r.NextDouble()) / 2.6);
-                int cityMigrants = (int)(10 * cityVictims * (1+r.NextDouble())/2);
+                int cityMigrants = (int)(50000 * factor * (1+r.NextDouble())/2);
                 if (c.Population < 100000)
                 {
-                    cityMigrants = (int)(c.Population * factor);
-                    cityVictims = 0;
-                    c.Population -= cityMigrants;
+                    if(factor < 0.7)
+                    {
+                        cityMigrants = (int)(c.Population * factor);
+                        c.Population -= cityMigrants;
+                        cityVictims = (int)(c.Population * factor * r.NextDouble());
+                        c.Population -= cityVictims;
+                    }
+                    else
+                    {
+                        cityMigrants = (int)(c.Population * factor * 0.5);
+                        c.Population -= cityMigrants;
+                        cityVictims = (int)(c.Population * factor * r.NextDouble());
+                        c.Population -= cityVictims;
+                    }
                 }
                 else
                 {
@@ -63,6 +74,10 @@ namespace DemographicSimulator.Events
                 victims += cityVictims;
                 migrants += cityMigrants;
             }
+        }
+        public override string ToString()
+        {
+            return "Earthquake!";
         }
     }
 }

@@ -64,5 +64,9 @@ namespace DemographicSimulator.Events
                 migrants += cityMigrants;
             }
         }
+        public override string ToString()
+        {
+            return "Flood!";
+        }
     }
 }

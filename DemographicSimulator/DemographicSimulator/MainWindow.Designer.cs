@@ -73,14 +73,14 @@
             // 
             this.loadFileToolStripMenuItem.Name = "loadFileToolStripMenuItem";
             this.loadFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.loadFileToolStripMenuItem.Size = new System.Drawing.Size(191, 26);
+            this.loadFileToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.loadFileToolStripMenuItem.Text = "Load file";
             this.loadFileToolStripMenuItem.Click += new System.EventHandler(this.LoadFileToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(191, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -153,7 +153,7 @@
             this.cityDataBox.Name = "cityDataBox";
             this.cityDataBox.Size = new System.Drawing.Size(180, 258);
             this.cityDataBox.TabIndex = 4;
-            this.cityDataBox.Text = "\nWarsaw\nPopulation: 1 764 615\nAvg. temperature: 7,73 °C\nDistance to river: 0 km";
+            this.cityDataBox.Text = "\n";
             this.cityDataBox.TextChanged += new System.EventHandler(this.RichTextBox1_TextChanged);
             // 
             // button1

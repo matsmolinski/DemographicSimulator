@@ -18,7 +18,9 @@ namespace DemographicSimulator
         public int power;
         public MapObjects.Point p;
         public MainControler mc;
-        public EventForm(MainControler mc)
+        public MainWindow mw;
+
+        public EventForm(MainControler mc, MainWindow mw)
         {
             InitializeComponent();
             eventList.Items.AddRange(new object[] { "Drought", "Earthquake", "Fire", "Flood", "Wind"});
@@ -29,6 +31,7 @@ namespace DemographicSimulator
             powerTextBox.Text = "100";
             p = new MapObjects.Point(0, 0);
             this.mc = mc;
+            this.mw = mw;
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -83,6 +86,7 @@ namespace DemographicSimulator
             }
             mc.ForceEvent(ev, p, power);
             Visible = false;
+            mw.RefreshCityDataBox();
         }
     }
 }

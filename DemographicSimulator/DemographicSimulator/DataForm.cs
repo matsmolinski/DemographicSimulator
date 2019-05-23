@@ -46,6 +46,11 @@ namespace DemographicSimulator
                 MessageBox.Show("Height value is not floating point number", "Error", MessageBoxButtons.OK);
                 return;
             }
+            if (dev < 0 || dev > 10)
+            {
+                MessageBox.Show("Wrong value of development level", "Error", MessageBoxButtons.OK);
+                return;
+            }
             mc.Birthrate = birth;
             mc.DevelopmentLevel = dev;
             mc.AvgTemperature = temp;

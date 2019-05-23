@@ -141,7 +141,7 @@ namespace DemographicSimulator
 // TUTAJ
         private void AddEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventForm eventWindow = new EventForm(mc)
+            EventForm eventWindow = new EventForm(mc, this)
             {
                 Visible = true
             };            
@@ -234,7 +234,7 @@ namespace DemographicSimulator
             }
         }
 
-        private void RefreshCityDataBox()
+        public void RefreshCityDataBox()
         {
             if (chosenCity == null)
             {
