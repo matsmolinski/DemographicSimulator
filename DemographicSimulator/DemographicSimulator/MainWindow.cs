@@ -1,17 +1,10 @@
 ﻿using DemographicSimulator.DataParser;
-using DemographicSimulator.Events;
 using DemographicSimulator.MapObjects;
 using DemographicSimulator.Simulator;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DemographicSimulator
@@ -34,8 +27,8 @@ namespace DemographicSimulator
             trackBar1.Location = new System.Drawing.Point(760, 80);
             trackBar1.Size = new Size(100, 45);
             trackBar1.Scroll += new EventHandler(TrackBar1_Scroll);
-            trackBar1.Minimum = 1;
-            trackBar1.Maximum = 12;
+            trackBar1.Minimum = 0;
+            trackBar1.Maximum = 11;
             trackBar1.TickFrequency = 1;
             trackBar1.LargeChange = 2;
             trackBar1.SmallChange = 1;
@@ -124,6 +117,7 @@ namespace DemographicSimulator
             if (mc.IsSimulationOn)
             {
                 button1.BackgroundImage = Properties.Resources.playbtn;
+                mc.IsSimulationOn = false;               
                 mc.IsSimulationOn = false;               
             }
             else
@@ -229,16 +223,16 @@ namespace DemographicSimulator
                 {
                     sliderValue = trackBar1.Value;
                 }));               
-                mc.MakeTimeJump(sliderValue);
+                mc.MakeTimeJump();
                 label2.Invoke(new Action(delegate ()
                 {
-                    label2.Text = AddToDate(sliderValue);
+                    label2.Text = AddToDate(1);
                 }));
                 cityDataBox.Invoke(new Action(delegate ()
                 {
                     RefreshCityDataBox();
                 }));
-                Thread.Sleep(1000);
+                Thread.Sleep(2000 - 163 * sliderValue);
             }
         }
 
@@ -257,14 +251,14 @@ namespace DemographicSimulator
             }
         }
 
-        private string AddToDate(int sliderValue)
+        private string AddToDate(int monthCount)
         {
             string currentData = label2.Text;
             string[] dateElements = currentData.Split('.');
             int.TryParse(dateElements[0], out int day);
             int.TryParse(dateElements[1], out int month);
             int.TryParse(dateElements[2], out int year);
-            month += sliderValue;
+            month += monthCount;
             if(month > 12)
             {
                 month -= 12;

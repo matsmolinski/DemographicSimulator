@@ -1,0 +1,17 @@
+# Kontury terenu: x y 
+10 10
+400 10
+400 300
+300 400
+10 350
+# Rzeki: numer x y 
+1 150 10
+1 150 100
+1 200 150
+# Miasta: x y Liczba_mieszkancow Nazwa (wysokosc) 
+150 105 1700000 Warszawa
+200 300 44000 Ciechanow 20
+# Dane Globalne: Nazwa_danej wartosc 
+stopien_rozwoju 2
+przyrost_naturalny 0.04
+srednia_temperatura 8

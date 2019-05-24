@@ -118,6 +118,7 @@
     <None Include="Textures\pausebtn.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="testdata.txt" />
     <Content Include="Textures\playbtn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
