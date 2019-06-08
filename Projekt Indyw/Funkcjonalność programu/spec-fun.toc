@@ -1,0 +1,7 @@
+\babel@toc {polish}{}
+\contentsline {section}{\numberline {1}Za\IeC {\l }o\IeC {\.z}enia aplikacji}{2}{section.1}
+\contentsline {section}{\numberline {2}Funkcje programu}{2}{section.2}
+\contentsline {section}{\numberline {3}Opis interakcji u\IeC {\.z}ytkownika z programem}{2}{section.3}
+\contentsline {section}{\numberline {4}Sytuacje wyj\IeC {\k a}tkowe}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Sytuacje zwi\IeC {\k a}zane z tekstowym plikiem wej\IeC {\'s}ciowym}{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Sytuacje zwi\IeC {\k a}zane z interakcj\IeC {\k a} z programem}{4}{subsection.4.2}

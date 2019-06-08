@@ -1,0 +1,275 @@
+\documentclass[a4paper,12pt]{article}
+\newcommand\tab[1][0.6cm]{\hspace*{#1} }
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabu}
+\title{ \sc{Specyfikacja implementacyjna} \\
+\emph{Projekt indywidualny} }
+
+\author{Mateusz Smoliński}
+
+\begin{document}
+
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{tabu} to 0.9\textwidth{ |X[c]|X[c]| } 
+ \hline
+ \textbf{Temat:} & \textbf{Wersja:} \\ 
+ Projekt aplikacji & 1.0 \\ 
+ \hline
+ \textbf{Autor:} & \textbf{Data:} \\ 
+ Mateusz Smoliński & 27.04.2019 \\
+ e-mail: 01131251@pw.edu.pl & \\
+ \hline
+\end{tabu}
+
+
+\tableofcontents
+
+\newpage
+
+\section{Opis środowiska}
+
+\tab Aplikacja Demographic Simulator jest pisana w ramach realizacji projektu indywidualnego, którego tematem jest zapoznanie ze środowiskiem Visual Studio i napisanie aplikacji w języku C\#. Powstaje w języku C\# wersji 7.3 (.NET Framework 4.7.2), w środowisku Microsoft Visual Studio 2019 w wersji 16.0.2. Implementacja oraz testowanie programu odbywać się będą na komputerach o następujących parametrach: 
+
+\begin{itemize}
+
+\item 64-bitowy system operacyjny Windows 10 Home ver. 1803,
+\item procesor Intel Core i5-7200U,
+\item pamięć RAM 8,00 GB,
+\item karty graficzne Intel HD Graphics 620 + NVIDIA GeForce 940MX.
+
+\end{itemize}
+
+\section{Diagramy klas}
+
+\tab Program składa się z kilku modułów -- odpowiedzialnych za wyświetlanie na ekranie, odczyt z pliku, przechowywanie danych aplikacji, operowanie tymi danymi oraz obsługę wydarzeń.
+
+Główną strukturę programu przedstawia następujący diagram: 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=16cm] a
+\caption{Diagram klas głównej części programu}
+\end{figure}
+
+Dodatkowo, klasy MainWindow i MainControler obsługują zdarzenia programu, które przedstawia poniższy diagram:
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=16cm] b
+\caption{Diagram zdarzeń wywoływanych w trakcie programu}
+\end{figure}
+
+Wszystkie diagramy są wykonane za pomocą wersji próbnej programu Enterprise Architect 14.1.
+
+
+\section{Opis klas/metod}
+
+
+\subsection{Klasa MainWindow}
+
+\tab Jest to bazowa klasa tego programu, odpowiadająca przede wszystkim za interfejs graficzny. Składa się ona z wielu odpowiadających za reagowanie zdarzeniowe na działania użytkownika. Wśród najważniejszych logicznych implementacji, które muszą być zawarte w implementacjach tych metod, warto wspomnieć o:
+
+\begin{itemize}
+\item metodzie, która wyświetli dane o mieście wskazywanym przez kursor w odpowiednim panelu po prawej stronie ekranu,
+\item metodzie, która będzie odpowiadać za uruchamianie i zatrzymywanie symulacji, wykorzystując przy tym oddzielny wątek,
+\item metodzie wybierającej i generującej wydarzenia na mapie, na podstawie informacji otrzymanej od użytkownika.
+\end{itemize}
+
+Do zadań tej klasy należeć będzie także realizacja podstawowych zadań interfejsu -- wywołanie wczytywania danych z pliku, wyświetlenie pomocy, informacji o autorze programu czy też wyłączenie programu.
+
+
+\subsection{Klasa Parser}
+
+\tab Ta klasa odpowiada za wczytanie danych z pliku tekstowego, które zostaną użyte w trakcie działania programu. Wszystkie metody w tej klasie są statyczne, przez co obiekt klasy Parser nie będzie powstawać w żadnym momencie trwania programu. Metody te w przypadku niepowodzenia korzystają z wyjątków, które przekazują do metody nadrzędnej -- metoda \textit{ReadData} przekazuje te wyjątki do klasy \textit{MainWindow}, która odpowiada za przekazanie komunikatu o błędzie użytkownikowi.
+
+\begin{itemize}
+\item \begin{lstlisting}
+Map ReadData(string inputFilePath) 
+\end{lstlisting}
+\end{itemize}
+
+Metoda \textit{ParseFile} jest główną metodą tej klasy. Otrzymuje ona ścieżkę do pliku w postaci napisu, po czym ma za zadanie otworzyć ten plik, przeanalizować każdą jego linię oraz zapisać dane w postaci zrozumiałej dla programu. Na podstawie składni pliku oraz linii oddzielających etapy wczytywania, oznaczonych \# na początku, odczytuje linię tekstu i dokonuje jej interpretacji.
+
+Klasa w późniejszej wersji programu będzie podzielona na mniejsze metody, odpowiadające za odczyt konkretnego rodzaju linii. Wszystkie dane będą zapamiętywane w pamięci programu do opisanych w dalszej części dokumentu obiektach klas z przestrzeni nazw \textit{MapObjects}.
+
+W przypadku niepowodzenia spowodowanego błędami składniowymi metoda \textit{ReadData} zwróci wyjątek, który zostanie później przekazany klasie \textit{MainWindow} i przedstawiony użytkownikowi. W przypadku powodzenia metoda zwraca przygotowany obiekt klasy \textit{Map}.
+
+
+
+\subsection{Przestrzeń nazw MapObjects}
+
+\tab Klasy z tej przestrzeni nazw są odpowiedzialne za przechowywanie informacji o elementach poddawanych symulacji. Będą one zawierać zarówno dane geometryczne potrzebne do rysowania ich w programie, jak i dane demograficzne wykorzystywanie do symulowania życia na mapie.
+
+\subsubsection{Klasa Point}
+
+
+\tab Ta klasa jest najprostszą klasą w programie. Jej zadaniem jest przechowywanie współrzędnych na mapie w postaci pary liczb. Jej metody ograniczą się do tworzenia punktów i ich porównywania na podstawie współrzędnych.
+
+\subsubsection{Klasa Line}
+
+\tab Klasa \textit{Line} jest kolejną prostą klasą przechowującą dane geometryczne. Jej zadaniem jest przechowywanie dwóch punktów (obiektów klasy \textit{Point}, które oznaczają geometryczny początek i koniec linii. Podobnie jak w przypadku klasy \textit{Point} jej metody ograniczają się do konstruktora obiektu oraz metod porównujących ze sobą obiekty klasy \textit{Line} na podstawie współrzędnych punktów.
+
+\subsubsection{Klasa River}
+
+
+\tab Ta klasa przechowuje kolekcję obiektów klasy \textit{Line}, interpretując je jako zestaw powiązanych ze sobą odcinków rzeki. W przeciwieństwie do dwóch poprzednich klas, klasa \textit{River} ma więcej zadań niż tylko przechowywanie danych -- wykonuje ona także obliczenia potrzebne do wyznaczenia dystansu.
+
+\begin{itemize}
+\item \begin{lstlisting}
+public double Distance(Point point)
+\end{lstlisting}
+\end{itemize}
+
+Te metoda odpowiada za wykonanie wspomnianych wcześniej obliczeń matematycznych potrzebnych do wyznaczenia dystansu od rzeki. Jako argument otrzymuje punkt, którego dystans od rzeki ma za zadanie wyznaczyć, po czym zwraca najkrótszą odległość spośród odległości od poszczególnych odcinków rzeki.
+
+\subsubsection{Klasa City}
+
+
+\tab Ta klasa będzie przechowywać podstawowe informacje o mieście. Należą do nich współrzędne miasta, traktowane w programie jako punkt o danych współrzędnych, a także populacja i inne dane o mieście. Pozostałe dane są przechowywane w zewnętrznym obiekcie, który jest opisany poniżej. 
+
+Miasto będzie umożliwiało wykonywanie podobnych operacji, co punkt i linia -- porównywanie miast ze sobą i sprawdzanie ich jednoznaczności w celu ułatwienia przyszłych iteracji.
+
+\subsubsection{Klasa CityData}
+
+\tab Ta klasa składać się będzie jedynie z właściwości opisujących miasto. Będą to między innymi:
+
+\begin{itemize}
+\item dystans do rzeki,
+\item współczynnik zdrowotności miasta,
+\item wysokość bezwzględna miasta.
+\end{itemize}
+
+\subsection{Przestrzeń nazw Simulator}
+
+\tab Klasy znajdujące się w tej przestrzeni pełnią funkcję serca samej symulacji życia. Odpowiadają one za przechowywanie globalnych informacji o mapie oraz przeprowadzanie obliczeń przesuwających symulację do przodu.
+
+\subsubsection{Klasa Map}
+
+\tab Klasa przechowuje wszystkie struktury zawarte w przestrzeni \textit{MapObjects}. Składa się z następujących elementów:
+
+\begin{itemize}
+\item listy miast występujących na mapie,
+\item listy rzek występujących na mapie,
+\item listy linii pełniących funkcję konturu dla mapy,
+\item obiekt klasy \textit{MapConfiguration}, przechowujący globalne informacje o danym terytorium.
+\end{itemize}
+
+
+\subsubsection{Klasa MapConfiguration}
+
+\tab Ta klasa pełni analogiczną rolę do klasy \textit{MapObject}. Przechowuje konkretne właściwości, dotyczące tym razem globalnych informacji potrzebnych do symulacji. Zawarte tu będą między innymi:
+
+\begin{itemize}
+\item średnia wysokość obszaru,
+\item średnia temperatura,
+\item współczynnik przyrostu naturalnego,
+\item poziom rozwoju cywilizacyjnego.
+\end{itemize}
+
+\subsubsection{Klasa MainControler}
+
+
+\tab W tej klasie znajdują się wszystkie najważniejsze operacje kalkulujące zmiany na mapie. Pełni ona także funkcję pośrednika pomiędzy główną klasą interfejsu (\textit{MainWindow}), a klasami przechowującymi dane o programie. 
+
+\begin{itemize}
+\item \begin{lstlisting}
+public void MakeTimeJump(int timePeriod)
+\end{lstlisting}
+\end{itemize}
+
+Najważniejsza metoda tej klasy odpowiada za przesunięcie mapy o dany okres, liczony w miesiącach. Wykorzystuje do tego dane zawarte w strukturach programu. Do jej zadań należy modyfikacja poszczególnych współczynników miast, sprawdzenie prawdopodobieństwa potencjalnych zdarzeń i ewentualne wywołanie tych zdarzeń.
+
+
+\begin{itemize}
+\item \begin{lstlisting}
+public void ForceEvent(IGameEvent gameEvent)
+\end{lstlisting}
+\end{itemize}
+
+Ta metoda otrzymuje jako argument zdarzenie wywołane przez interfejs użytkownika. Jej zadaniem jest wywołanie zdarzenia i wykonanie zmian na mapie gry bez wywoływania przesunięcia czasowego. 
+
+
+\subsection{Przestrzeń nazw Events}
+
+\tab Ta przestrzeń składa się z interfejsu \textit{IGameEvent} oraz kilku klas implementujących ten interfejs. Zadaniem tych klas jest przeprowadzenie zdarzenia w danym punkcie mapy.
+
+\subsubsection{Interfejs IGameEvent}
+
+\begin{itemize}
+\item \begin{lstlisting}
+Map ProceedEvent(Map map, Point center)
+\end{lstlisting}
+\end{itemize}
+
+Ten interfejs składa się z dokładnie jednej metody, która jako argumenty otrzymuje mapę gry oraz punkt będący epicentrum wywoływanego zdarzenia. Każda klasa implementująca ten interfejs może zmodyfikować mapę w inny sposób, zależny od danego zdarzenia.
+
+
+\subsubsection{Klasy zdarzeniowe}
+
+\tab Do klas implementujących zdarzenia należą wymienione wcześniej na diagramie klasy:
+
+\begin{itemize}
+\item \textit{Drought},
+\item \textit{Earthquake},
+\item \textit{Fire},
+\item \textit{Flood},
+\item \textit{Wind}.
+\end{itemize}
+
+Każda z tych klas ma za zadanie wywołać docelową zmianę na mapie rozgrywki, korzystając z informacji zawartych w klasie kontenerowej \textit{Map}.
+
+\section{Plan testów}
+
+\tab W ramach projektu zostaną przeprowadzone testy oprogramowania, które składać się będą z testów ogólnych oraz jednostkowych. 
+
+
+\subsection{Testy akceptacyjne programu}
+
+\tab Testy ogólne będą polegać na przetestowaniu programu z perspektywy użytkownika. Polegać będą na przeprowadzeniu testowych symulacji przez interfejs graficzny, sprawdzenie kilku nieprzewidywalnych wyborów i próby wprowadzenia niewłaściwych plików do programu. Wszystkie sytuacje, które nie zostały obsłużone przez program zostaną poprawione w ostatecznej wersji aplikacji.
+
+\subsection{Testy jednostkowe} 
+
+\tab Do testów jednostkowych, przeprowadzanych z poziomu kodu muszą należeć testy następujących zagadnień:
+
+\begin{enumerate}
+\item Testy klas zdarzeniowych -- metody zdarzeniowe będą otrzymywać przygotowane obiekty \textit{Map}, po czym testy będą sprawdzać, czy nastąpiły zmiany zgodne z przewidywaniami wywołującego zdarzenia testera z uwzględnieniem ewentualnych elementów losowych.
+
+\item Testy klas przechowujących dane -- testowane będzie poprawne działanie metod obliczających (takich jak odległość od rzeki) oraz metod \textit{equals} sprawdzających tożsamość punktów i linii.
+
+\item Testy klasy Parser, polegające na podaniu plików tekstowych z celowo przygotowanymi różnymi rodzajami błędów.
+
+\item Testy klas z przestrzeni \textit{Simulator}, polegające przede wszystkim na wywoływaniu ręcznym zdarzeń i różnych czasowych skoków z łatwymi do przewidzenia skutkami.
+\end{enumerate}
+
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+ \textbf{Data:} & \textbf{Autor:} & \textbf{Zakres:} & \textbf{Zatwierdził:} & \textbf{Wersja:} \\ 
+ \hline
+ 11.04.2019 & MS & Utworzenie dokumentu, wstępny opis klas & MS & 0.1 \\ 
+ \hline
+ 23.04.2019 & MS & Wygenerowanie diagramów, poprawki & MS & 0.2 \\ 
+ \hline
+ 27.04.2019 & MS & Uzupełnienie opisów klas i testów & MS & 1.0 \\ 
+ \hline
+ \end{tabular}
+\end{center}
+
+\end{document}

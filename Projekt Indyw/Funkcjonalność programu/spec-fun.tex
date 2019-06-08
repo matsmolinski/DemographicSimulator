@@ -1,0 +1,155 @@
+\documentclass[a4paper,12pt]{article}
+\newcommand\tab[1][0.6cm]{\hspace*{#1} }
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabu}
+\title{ \sc{Specyfikacja funkcjonalna} \\
+\emph{Projekt indywidualny} }
+
+\author{Mateusz Smoliński}
+
+\begin{document}
+
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{tabu} to 0.9\textwidth{ |X[c]|X[c]| } 
+ \hline
+ \textbf{Temat:} & \textbf{Wersja:} \\ 
+ Opis funkcjonalności aplikacji & 1.0 \\ 
+ \hline
+ \textbf{Autor:} & \textbf{Data:} \\ 
+ Mateusz Smoliński & 11.04.2019 \\
+ e-mail: 01131251@pw.edu.pl & \\
+ \hline
+\end{tabu}
+
+
+\tableofcontents
+
+\newpage
+
+\section{Założenia aplikacji}
+
+\tab Aplikacja Demographic Simulator jest pisana w ramach realizacji projektu indywidualnego, którego tematem jest zapoznanie ze środowiskiem Visual Studio i napisanie aplikacji w języku C\#. 
+
+Tematem aplikacji jest symulacja demograficzna na prostym, wyznaczonym geometrycznie obszarze. Będzie ona otrzymywać plik z danymi o wyznaczonym obszarze oraz znajdujących się na nim miastach. Użytkownik będzie mógł zmieniać różne parametry wewnątrz programu, od których będzie zależeć przyrost naturalny oraz częstotliwość występowania zdarzeń losowych. Po zamieszczeniu wszystkich potrzebnych informacji możliwe będzie uruchomienie symulacji z możliwością dostosowania szybkości, a także z bezpośrednim wpływem na wydarzenia przez uruchamianie dodatkowych wydarzeń.
+
+
+\section{Funkcje programu}
+
+\tab Program posiada następujące główne funkcje:
+\begin{enumerate}
+\item rysowanie mapy na podstawie danych z pliku,
+\item symulowanie planszy z możliwością dostosowania szybkości symulacji,
+\item modyfikowanie parametrów demograficznych z użyciem odpowiedniego menu lub z pliku tekstowego,
+\item ręczne dodawanie oraz automatyczne generowanie zdarzeń na podstawie tych wartości.
+\end{enumerate}
+
+\section{Opis interakcji użytkownika z programem}
+
+\tab Na \textit{Rysunku 1} przedstawiono prototypowy wygląd okna głównego programu. W górnej części okna znajduje się pasek narzędzi, na którym umieszczono pięć przycisków. 
+
+Pierwszy z nich pozwala na wybranie pliku rozpoczynającego symulację, a także wyłączenie symulacji. Kolejny przycisk nazwany "Adjust World" pozwala na zmianę globalnych zmiennych wykorzystywanych w programie, takich jak przyrost naturalny czy poziom wód. Trzeci przycisk pozwala na ręczne wywołanie zdarzenia na mapie, które można dostosować pomocniczym oknem graficznego interfejsu. Kolejne dwa przyciski pokazują informację o sterowaniu programem oraz o szczegółach projektu.
+
+Prawa część interfejsu pozwala nam na dostosowanie prędkości symulacji. Powyżej widzimy datę, która będzie się zmieniać wraz z trwaniem symulacji. W prawym dolnym rogu wyświetlają się dane dotyczące aktualnie wybranego miasta.
+
+Główną część interfejsu graficznego zajmuje sama mapa, na której odbywać się będzie symulacja. Mapa będzie interaktywna, użytkownik będzie mógł wybrać miasto, którego statystyki chce zobaczyć na panelu bocznym. Użytkownik może także wywoływać różne zdarzenia, które mogą mieć wpływ na zachowanie elementów mapy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=16cm] a
+\caption{Okno główne programu}
+\end{figure}
+
+Poniżej przedstawiono przykładowy plik wejściowy. Program oczekuje na plik tekstowy w formacie \textit{.txt}.
+
+\begin{lstlisting}
+# Kontury terenu: x y
+0 0
+0 20
+20 30.5
+40 20
+40 0
+
+# Rzeki: numer x y
+1 10 10
+1 10 50
+1 60 50
+2 43 23
+2 43 10
+
+# Miasta: x y Liczba_mieszkancow Nazwa (temperatura) (wysokosc)
+1 1 1700000 Warszawa
+1 19 44000 Ciechanow 5 20
+30 10  300000 Wroclaw
+
+# Dane Globalne: Nazwa_danej wartosc
+stopien_rozwoju 2
+przyrost_naturalny 4%
+temperatura_globalna 8
+
+
+
+\end{lstlisting}
+
+Strukturę pliku wejściowego można podzielić na 4 sekcje, gdzie każda zaczyna się od niezmiennej linii komentarza, rozpoczynającej się od znaku \textit{\#}.
+
+W pierwszej części pliku wejściowego znajdują się informacje o umiejscowieniu punktów konturu na mapie. Kontur składa się z punktów konturu oraz linii konturu łączących podane punkty, przy czym istnieją połączenia pomiędzy punktami o kolejnych indeksach oraz pomiędzy punktem o pierwszym i ostatnim indeksie.
+
+W kolejnej części pliku znajduje się definicja rzek. Rzeki deklaruje się podobnie do konturów, przy czym nie jest zawierane połączenie pomiędzy pierwszym i ostatnim punktem i możliwe jest zadeklarowanie większej ilości rzek -- w tym celu umieszcza się liczby porządkowe jako pierwszy argument.
+
+Trzecia część zawiera definicję miast. Dla każdego miasta wymagane jest podanie współrzędnych, nazwy i startowej liczby mieszkańców, po czym można umieścić opcjonalne specjalne dane dla konkretnych państw -- w przeciwnym wypadku przyjęte zostaną wartości domyślne, obliczone na podstawie danych globalnych.
+
+W ostatniej części struktury pliku wejściowego można umieścić dane globalne. Przykładowy plik zawiera 3 takie dane, ostateczna wersja aplikacji może przyjmować większą ilość danych, co zostanie uwzględnione w sprawozdaniu końcowym. Jeśli dane nie zostaną podane, automatycznie zostaną przydzielone losowe wartości tych argumentów.
+
+\section{Sytuacje wyjątkowe}
+
+\tab W ramach programu zostały przewidziane także sytuacje wyjątkowe, związane z niewłaściwymi danymi dostarczonymi w pliku lub w przypadku niepoprawnych wartości wpisywanych przy wprowadzaniu zdarzeń.
+
+
+\subsection{Sytuacje związane z tekstowym plikiem wejściowym}
+\begin{itemize}
+\item gdy program nie odnajdzie wskazanego pliku, program wypisze komunikat o braku pliku z danymi w określonej lokalizacji,
+\item gdy plik będzie zawierać kontur mapy o nieobsługiwanym kształcie, program wypisze stosowną informację,
+\item gdy któreś z miast zadeklarowanych w pliku będzie znajdować się poza konturem, zostanie zignorowane przez program z wypisaniem komunikatu,
+\item gdy któreś z miast zostanie zadeklarowane z niewystarczającą liczbą informacji, zostanie zignorowany przez program z wypisaniem komunikatu,
+\item gdy któraś z wartości liczbowych będzie ujemna lub innego formatu, program wypisze komunikat o błędzie w danej linii,
+\item gdy użytkownik nie poda globalnych danych demograficznych, program wypisze ostrzeżenie i przyjmie domyślne wartości,
+\item gdy użytkownik poda niepoprawną wartość w deklaracji globalnych danych demograficznych, program wypisze ostrzeżenie i przyjmie domyślne wartości.
+
+\end{itemize}
+
+\subsection{Sytuacje związane z interakcją z programem} 
+\begin{itemize}
+\item gdy użytkownik spróbuje podać niewłaściwy współczynnik przy dodawaniu wydarzeń, program wypisze komunikat i anuluje dodawanie wydarzenia.
+\end{itemize}
+
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+ \textbf{Data:} & \textbf{Autor:} & \textbf{Zakres:} & \textbf{Zatwierdził:} & \textbf{Wersja:} \\ 
+ \hline
+ 30.03.2019 & MS & Utworzenie dokumentu & MS & 0.1 \\ 
+ \hline
+ 30.03.2019 & MS & Wstęp, definicja funkcji & MS & 0.2 \\ 
+ \hline
+ 11.04.2019 & MS & Opis interakcji i zakończenie & MS & 1.0 \\ 
+ \hline
+ \end{tabular}
+\end{center}
+
+\end{document}
